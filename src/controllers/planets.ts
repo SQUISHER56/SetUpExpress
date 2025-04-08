@@ -1,5 +1,5 @@
 import e, { Request, Response } from "express";
-import Joi from "joi"
+import Joi from "joi";
 
 type Planet = {
   id: number;
@@ -20,26 +20,33 @@ const getAll = (req: Request, res: Response) => {
 const getOneById = (req: Request, res: Response) => {
   const { id } = req.params;
   const planet = planets.find((p) => p.id === Number(id));
-  res.status(200).json(planet);
+
+  if (planet) {
+      res.status(200).json(planet);
+  } else {
+    res.status(404).json({ msg: "[ERROR]:Planet Not Found"})
+  }
 };
 
-    const planetSchema = Joi.object({
-        id: Joi.number().integer().required(),
-        name: Joi.string().required(),
-    })
+const planetSchema = Joi.object({
+  id: Joi.number().integer().required(),
+  name: Joi.string().required(),
+});
 
 const create = (req: Request, res: Response) => {
   const { id, name } = req.body;
   const newPlanet: Planet = { id, name };
-    const validateNewPlanet = planetSchema.validate(newPlanet);
+  const validateNewPlanet = planetSchema.validate(newPlanet);
 
-    if(validateNewPlanet.error) {
-        return res.status(400).json({ msg: validateNewPlanet.error.details[0].message})
-    } else {
-        planets = [...planets, newPlanet];
-        res.status(201).json({ msg: "The planet was created."})
-    }
-    
+  if (validateNewPlanet.error) {
+    return res
+      .status(400)
+      .json({ msg: validateNewPlanet.error.details[0].message });
+  } else {
+    planets = [...planets, newPlanet];
+    res.status(201).json({ msg: "The planet was created." });
+  }
+
   console.log(planets);
 };
 
