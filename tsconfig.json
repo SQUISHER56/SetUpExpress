@@ -1,11 +1,26 @@
 {
-  "extends": "@tsconfig/node18/tsconfig.json",
   "compilerOptions": {
-    "strict": true,
-    "outDir": "./dist",
-    "module": "es6",
-    "target": "ES6"
+      "module": "commonjs",
+      "esModuleInterop": true,
+      "allowSyntheticDefaultImports": true,
+      "target": "es6",
+      "noImplicitAny": true,
+      "moduleResolution": "node",
+      "sourceMap": true,
+      "outDir": "dist",
+      "baseUrl": ".",
+      "paths": {
+          "*": [
+              "node_modules/*",
+              "src/types/*"
+          ]
+      }
   },
-  "include": ["./src/**/*.ts"],
-  "exclude": ["./src/**/*.test.js"]
+  "include": [
+      "src/*"
+  ],
+  "exclude": [
+      "*.json",
+      "dist"
+  ]
 }
